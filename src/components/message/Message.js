@@ -34,7 +34,7 @@ class Message extends React.Component {
     componentDidMount() {
         let style = {...this.state.style};
         style.display = null;
-        style.width = pxToRem(this.getWidth() + 5);
+        style.width = pxToRem(this.getWidth());
         this.setState({style: style});
     }
 
