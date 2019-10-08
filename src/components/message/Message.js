@@ -18,28 +18,97 @@ class Message extends React.Component {
         this.state = {
             style: {
                 display: 'inline-block',
-                width: 'auto'
+                width: 'auto',
+                height: 'auto',
+                borderBottomLeftRadius: 0,
+            },
+            pointsStyle: {
+                display: 'none'
+            },
+            textStyle: {
+                display: 'auto'
             }
         }
+        this.pointsWidth = '2.25rem';
+        this.width = 'auto';
+        this.height = 'auto';
+        this.writingSpeed = 50;    // In milliseconds
     }
 
     render() {
         return (
-            <div className="Message" style={this.state.style} ref={this.ref}>
-                <span className="Message-text">{this.props.text}</span>
+            <div className="Message" style={this.getStyle()} ref={this.ref}>
+                <span className="Message-points" style={this.state.pointsStyle}>···</span>
+                <span className="Message-text" style={this.state.textStyle}>{this.props.text}</span>
             </div>
         )
     }
 
     componentDidMount() {
-        let style = {...this.state.style};
-        style.display = null;
-        style.width = pxToRem(this.getWidth());
-        this.setState({style: style});
+        let style = {...this.getStyle()};
+        let pointsStyle = {...this.state.pointsStyle};
+        let textStyle = {...this.state.textStyle};
+
+        this.width = pxToRem(this.getWidth());              // Using display: inline-block to automatically get the best width
+        this.height = pxToRem(this.getHeight());            // Using display: inline-block to automatically get the best height
+        style.display = null;                               // After getting the width, display can return to block
+        style.width = this.pointsWidth;                     // Match the three points width
+        pointsStyle.display = "block";                      // Show the points
+        textStyle.display = "none";                         // Hide the text
+
+        this.setState({style: style, width: this.state.width, pointsStyle: pointsStyle, textStyle: textStyle}, () => {
+            let style = {...this.getStyle()};
+            let pointsStyle = {...this.state.pointsStyle};
+            let textStyle = {...this.state.textStyle};
+
+            style.borderBottomLeftRadius = "1.25rem";       
+            style.width = this.width;                       // Match the text width
+            style.height = this.height;                     // Match the text height
+            pointsStyle.display = "none";                   // Hide the points
+            textStyle.display = "block";                    // Display the text
+
+            setTimeout(() => {
+                this.setState({style: style}, () => {
+                    setTimeout(() => {
+                        this.setState({pointsStyle: pointsStyle, textStyle: textStyle});
+                    }, 250)                                 // It should match the transition time in the scss
+                });
+            }, this.getWritingTime());
+        });
     }
 
     getWidth() {
         return this.ref.current.offsetWidth;
+    }
+
+    getHeight() {
+        return this.ref.current.offsetHeight;
+    }
+
+    getStyle() {
+        let propsStyle = this.props.style ? this.props.style : {};
+        return Object.assign(propsStyle, this.state.style);
+    }
+
+    getTextLength() {
+        let text = this.props.text.props.children;
+
+        if (typeof(text) == 'string') {
+            return text.length;
+        } else {
+            let length = 0;
+            text.forEach((element) => {
+                let elementLength = element.length;
+                if (typeof(elementLength) === 'number') {
+                    length += element.length;
+                }
+            });
+            return length;
+        }
+    }
+
+    getWritingTime() {
+        return this.getTextLength() * this.writingSpeed;
     }
 }
 
