@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 
 import './Message.scss';
 
+var getFontSize = function() {
+    return parseInt(getComputedStyle(document.body).getPropertyValue('font-size'));
+}
+
+var pxToRem = function(px) {
+    return px / getFontSize() + 'rem';
+}
+
 class Message extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +34,7 @@ class Message extends React.Component {
     componentDidMount() {
         let style = {...this.state.style};
         style.display = null;
-        style.width = (this.getWidth() + 4) + 'px';
+        style.width = pxToRem(this.getWidth() + 5);
         this.setState({style: style});
     }
 

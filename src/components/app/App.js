@@ -16,7 +16,7 @@ const MESSAGES = [
   <span>I'm Xavi</span>,
   <span>I manipulate data and craft things on the web</span>,
   <span>I'm currently looking for a job.<br/>You can contact me at <a href="mailto:velasco.llaurado@gmail.com">velasco.llaurado@gmail.com</a></span>,
-  <span><a href="twitter.com/Velah_">twitter.com/Velah_</a><br/><a href="github.com/Velah">github.com/Velah</a></span>,
+  <span><a href="twitter.com/Velah_">twitter.com/Velah_</a><br/><a href="github.com/Velah">github.com/Velah</a><br/><a href="https://www.linkedin.com/in/velasco-llaurado">linkedin.com/in/velasco-llaurado/</a></span>,
   <span>Have a {getTimeOfDay()}</span>,
   <span><span role="img" aria-label="eyes">👀</span> XVL.</span>
 ]
@@ -42,20 +42,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.renderMessage();
+    this.renderMessage(0);
   }
   
   componentDidUpdate() {
     this.renderMessage();
   }
 
-  renderMessage() {
+  renderMessage(timeout=2000) {
     if (this.state.nextMessage !== '') {
       setTimeout(() => {this.setState({
         renderedMessages: [...this.state.renderedMessages, this.state.nextMessage],
-        nextMessage: this.state.nextIndex + 1 < MESSAGES.length ? MESSAGES[this.state.nextIndex+1] : '',
-        nextIndex: this.state.nextIndex+1
-      })}, 2000);
+        nextMessage: this.state.nextIndex + 1 < MESSAGES.length ? MESSAGES[this.state.nextIndex + 1] : '',
+        nextIndex: this.state.nextIndex + 1
+      })}, timeout);
     }
     
   }
