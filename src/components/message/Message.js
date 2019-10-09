@@ -31,7 +31,6 @@ class Message extends React.Component {
         }
         this.pointsWidth = '2.25rem';
         this.width = 'auto';
-        this.height = 'auto';
         this.writingSpeed = 50;    // In milliseconds
     }
 
@@ -50,7 +49,6 @@ class Message extends React.Component {
         let textStyle = {...this.state.textStyle};
 
         this.width = pxToRem(this.getWidth());              // Using display: inline-block to automatically get the best width
-        this.height = pxToRem(this.getHeight());            // Using display: inline-block to automatically get the best height
         style.display = null;                               // After getting the width, display can return to block
         style.width = this.pointsWidth;                     // Match the three points width
         pointsStyle.display = "block";                      // Show the points
@@ -63,7 +61,6 @@ class Message extends React.Component {
 
             style.borderBottomLeftRadius = "1.25rem";       
             style.width = this.width;                       // Match the text width
-            style.height = this.height;                     // Match the text height
             pointsStyle.display = "none";                   // Hide the points
             textStyle.display = "block";                    // Display the text
 
@@ -78,11 +75,7 @@ class Message extends React.Component {
     }
 
     getWidth() {
-        return this.ref.current.offsetWidth;
-    }
-
-    getHeight() {
-        return this.ref.current.offsetHeight;
+        return this.ref.current.offsetWidth + 13;
     }
 
     getStyle() {

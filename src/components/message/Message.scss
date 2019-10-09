@@ -3,12 +3,17 @@
     display: block;
 
     background: rgba(206, 206, 206, .5);
-    margin: 0 0 .125rem 0;
-    padding: .5rem .85rem;
+    margin-bottom: .125rem;
+    padding: .5rem .85rem .5rem .95rem;
     line-height: 1.25rem;
     border-radius: 1.25rem;
 
     transform-origin: 0 100%;
     transition: all .25s ease-out;
-    white-space: nowrap;
+}
+
+@media screen and (min-width: 1200px) {
+    .Message {
+        white-space: nowrap;
+    }
 }
