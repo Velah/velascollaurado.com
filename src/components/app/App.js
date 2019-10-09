@@ -27,6 +27,8 @@ const MESSAGES = [
   <span><Emoji label="eyes" emoji="👀"></Emoji> XVL.</span>
 ]
 
+const TIME_BETWEEN_MESSAGES = 600;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,33 +39,31 @@ class App extends React.Component {
       nextIndex: 0
     }
   }
+
   render() {
     return (
       <div id="App" className="App">
         {this.state.renderedMessages.map((message, index) => {
-            return <Message text={message} key={index}></Message>
+            return <Message key={index} text={message} onFinishRendering={this.renderMessage}></Message>
         })}
       </div>
     );
   }
 
   componentDidMount() {
-    this.renderMessage(0);
-  }
-  
-  componentDidUpdate() {
     this.renderMessage();
   }
 
-  renderMessage(timeout=2600) {
+  renderMessage() {
     if (this.state.nextMessage !== '') {
-      setTimeout(() => {this.setState({
-        renderedMessages: [...this.state.renderedMessages, this.state.nextMessage],
-        nextMessage: this.state.nextIndex + 1 < MESSAGES.length ? MESSAGES[this.state.nextIndex + 1] : '',
-        nextIndex: this.state.nextIndex + 1
-      })}, timeout);
+      setTimeout(() => {
+        this.setState({
+          renderedMessages: [...this.state.renderedMessages, this.state.nextMessage],
+          nextMessage: this.state.nextIndex + 1 < MESSAGES.length ? MESSAGES[this.state.nextIndex + 1] : '',
+          nextIndex: this.state.nextIndex + 1
+        });
+      }, TIME_BETWEEN_MESSAGES);
     }
-    
   }
 }
 

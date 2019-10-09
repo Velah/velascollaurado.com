@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import './Message.scss';
 
+const WRITING_SPEED = 30;       // In milliseconds. Lower is faster.
+
 var getFontSize = function() {
     return parseInt(getComputedStyle(document.body).getPropertyValue('font-size'));
 }
@@ -31,7 +33,6 @@ class Message extends React.Component {
         }
         this.pointsWidth = '2.25rem';
         this.width = 'auto';
-        this.writingSpeed = 50;    // In milliseconds
     }
 
     render() {
@@ -67,8 +68,10 @@ class Message extends React.Component {
             setTimeout(() => {
                 this.setState({style: style}, () => {
                     setTimeout(() => {
-                        this.setState({pointsStyle: pointsStyle, textStyle: textStyle});
-                    }, 250)                                 // It should match the transition time in the scss
+                        this.setState({pointsStyle: pointsStyle, textStyle: textStyle}, () => {
+                            this.props.onFinishRendering();
+                        });
+                    }, 250);                                // It should match the transition time in the scss
                 });
             }, this.getWritingTime());
         });
@@ -93,7 +96,12 @@ class Message extends React.Component {
             text.forEach((element) => {
                 let elementLength = element.length;
                 if (typeof(elementLength) === 'number') {
-                    length += element.length;
+                    length += elementLength;
+                } else if ('props' in element && 'children' in element.props) {
+                    elementLength = element.props.children.length;
+                    if (typeof(elementLength) === 'number') {
+                        length += elementLength;
+                    }
                 }
             });
             return length;
@@ -101,12 +109,13 @@ class Message extends React.Component {
     }
 
     getWritingTime() {
-        return this.getTextLength() * this.writingSpeed;
+        return this.getTextLength() * WRITING_SPEED;
     }
 }
 
 Message.propTypes = {
-    text: PropTypes.any.isRequired
+    text: PropTypes.any.isRequired,
+    onFinishRendering: PropTypes.func.isRequired,
 }
 
 export default Message;
