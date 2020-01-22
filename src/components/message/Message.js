@@ -31,14 +31,20 @@ class Message extends React.Component {
                 display: 'auto'
             }
         }
-        this.pointsWidth = '2.25rem';
+        this.pointsWidth = '3.6rem';
         this.width = 'auto';
     }
 
     render() {
         return (
             <div className="Message" style={this.getStyle()} ref={this.ref}>
-                <span className="Message-points" style={this.state.pointsStyle}>···</span>
+                <span className="Message-points" style={this.state.pointsStyle}>
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                </span>
                 <span className="Message-text" style={this.state.textStyle}>{this.props.text}</span>
             </div>
         )
