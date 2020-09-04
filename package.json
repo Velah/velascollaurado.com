@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "modern-css-reset": "^1.0.4",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
